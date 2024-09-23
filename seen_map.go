@@ -1,7 +1,7 @@
-package maps
+package sets
 
 import (
-	"github.com/PlayerR9/go-maps/internal"
+	"github.com/PlayerR9/go-sets/internal"
 )
 
 // SeenSet is a map that keeps track of seen values.

@@ -1,4 +1,4 @@
-package maps
+package sets
 
 import (
 	"iter"

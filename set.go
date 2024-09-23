@@ -1,4 +1,4 @@
-package maps
+package sets
 
 type Set interface {
 	// IsEmpty checks whether the set is empty.
