@@ -6,6 +6,8 @@ import (
 )
 
 // EqualSet represents a set of elements that implements the Equals method.
+//
+// Interface: Equals(other T) bool
 type EqualSet[T interface {
 	Equals(other T) bool
 }] struct {
@@ -49,31 +51,29 @@ func NewEqualSet[T interface {
 	}
 }
 
-// Add adds an element to the set. If the element is already in the set, this method does nothing.
+// Add adds an element to the set. If the element already exists or the receiver
+// is nil, this function does nothing.
 //
 // Parameters:
 //   - elem: The element to add.
-//
-// Returns:
-//   - bool: True if the element was added, false otherwise.
-//
-// If the receiver is nil, this function returns false.
-func (s *EqualSet[T]) Add(elem T) bool {
+func (s *EqualSet[T]) Add(elem T) {
 	if s == nil {
-		return false
+		return
 	}
 
 	has_element := slices.ContainsFunc(s.elems, elem.Equals)
-
 	if !has_element {
 		s.elems = append(s.elems, elem)
 	}
-
-	return !has_element
 }
 
+// AddMany is the same as Add, but adds many elements at once. More optimized
+// than calling Add multiple times.
+//
+// Parameters:
+//   - elems: The elements to add.
 func (s *EqualSet[T]) AddMany(elems []T) {
-	if s == nil {
+	if s == nil || len(elems) == 0 {
 		return
 	}
 

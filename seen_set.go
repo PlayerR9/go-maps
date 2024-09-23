@@ -33,11 +33,11 @@ func (sm *SeenSet[T]) Reset() {
 	}
 }
 
-// NewSeenMap creates a new SeenMap.
+// NewSeenSet creates a new SeenSet.
 //
 // Returns:
-//   - *SeenMap[T]: The new SeenMap. Never returns nil.
-func NewSeenMap[T comparable]() *SeenSet[T] {
+//   - *SeenSet[T]: The new SeenSet. Never returns nil.
+func NewSeenSet[T comparable]() *SeenSet[T] {
 	return &SeenSet[T]{
 		table: make(map[T]struct{}),
 	}

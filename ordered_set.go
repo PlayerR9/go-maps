@@ -6,8 +6,8 @@ import (
 	"slices"
 )
 
-// OrderedMap is a map that is ordered by the keys.
-type OrderedMap[K cmp.Ordered, V any] struct {
+// OrderedSet is a set that is ordered by the keys.
+type OrderedSet[K cmp.Ordered, V any] struct {
 	// values is a map of the values in the map.
 	values map[K]V
 
@@ -16,17 +16,17 @@ type OrderedMap[K cmp.Ordered, V any] struct {
 }
 
 // IsEmpty implements the Set interface.
-func (m OrderedMap[K, V]) IsEmpty() bool {
+func (m OrderedSet[K, V]) IsEmpty() bool {
 	return len(m.keys) == 0
 }
 
 // Size implements the Set interface.
-func (m OrderedMap[K, V]) Size() int {
+func (m OrderedSet[K, V]) Size() int {
 	return len(m.keys)
 }
 
 // Reset implements the Set interface.
-func (m *OrderedMap[K, V]) Reset() {
+func (m *OrderedSet[K, V]) Reset() {
 	if m == nil {
 		return
 	}
@@ -42,12 +42,12 @@ func (m *OrderedMap[K, V]) Reset() {
 	}
 }
 
-// NewOrderedMap creates a new OrderedMap.
+// NewOrderedSet creates a new OrderedSet.
 //
 // Returns:
-//   - *OrderedMap: A pointer to the newly created OrderedMap. Never returns nil.
-func NewOrderedMap[K cmp.Ordered, V any]() *OrderedMap[K, V] {
-	return &OrderedMap[K, V]{
+//   - *OrderedSet: A pointer to the newly created OrderedSet. Never returns nil.
+func NewOrderedSet[K cmp.Ordered, V any]() *OrderedSet[K, V] {
+	return &OrderedSet[K, V]{
 		values: make(map[K]V),
 		keys:   make([]K, 0),
 	}
@@ -61,7 +61,7 @@ func NewOrderedMap[K cmp.Ordered, V any]() *OrderedMap[K, V] {
 // Returns:
 //   - V: The value of the key in the map.
 //   - bool: True if the key exists in the map. False if the key does not exist.
-func (m OrderedMap[K, V]) Get(key K) (V, bool) {
+func (m OrderedSet[K, V]) Get(key K) (V, bool) {
 	if len(m.keys) == 0 {
 		return *new(V), false
 	}
@@ -77,7 +77,7 @@ func (m OrderedMap[K, V]) Get(key K) (V, bool) {
 //
 // Returns:
 //   - bool: True if the key exists in the map. False if the key does not exist.
-func (m OrderedMap[K, V]) Contains(key K) bool {
+func (m OrderedSet[K, V]) Contains(key K) bool {
 	if len(m.keys) == 0 {
 		return false
 	}
@@ -91,7 +91,7 @@ func (m OrderedMap[K, V]) Contains(key K) bool {
 //
 // Parameters:
 //   - key: The key to remove.
-func (m *OrderedMap[K, V]) Remove(key K) {
+func (m *OrderedSet[K, V]) Remove(key K) {
 	if m == nil {
 		return
 	}
@@ -111,7 +111,7 @@ func (m *OrderedMap[K, V]) Remove(key K) {
 // Parameters:
 //   - key: The key to add.
 //   - value: The value to add.
-func (m *OrderedMap[K, V]) Add(key K, value V) {
+func (m *OrderedSet[K, V]) Add(key K, value V) {
 	if m == nil {
 		return
 	}
@@ -131,7 +131,7 @@ func (m *OrderedMap[K, V]) Add(key K, value V) {
 // Parameters:
 //   - key: The key to add.
 //   - value: The value to add.
-func (m *OrderedMap[K, V]) ForceAdd(key K, value V) {
+func (m *OrderedSet[K, V]) ForceAdd(key K, value V) {
 	if m == nil {
 		return
 	}
@@ -148,7 +148,7 @@ func (m *OrderedMap[K, V]) ForceAdd(key K, value V) {
 //
 // Returns:
 //   - map[K]V: The map of the values in the map. Nil if there are no keys.
-func (m OrderedMap[K, V]) Map() map[K]V {
+func (m OrderedSet[K, V]) Map() map[K]V {
 	if len(m.keys) == 0 {
 		return nil
 	}
@@ -166,7 +166,7 @@ func (m OrderedMap[K, V]) Map() map[K]V {
 //
 // Returns:
 //   - []K: The keys in the map.
-func (m OrderedMap[K, V]) Keys() []K {
+func (m OrderedSet[K, V]) Keys() []K {
 	if len(m.keys) == 0 {
 		return nil
 	}
@@ -182,7 +182,7 @@ func (m OrderedMap[K, V]) Keys() []K {
 //
 // Returns:
 //   - iter.Seq2[K, V]: The iterator. Never returns nil.
-func (m OrderedMap[K, V]) Entry() iter.Seq2[K, V] {
+func (m OrderedSet[K, V]) Entry() iter.Seq2[K, V] {
 	if len(m.keys) == 0 {
 		return func(yield func(K, V) bool) {}
 	}
