@@ -43,6 +43,22 @@ func NewSeenSet[T comparable]() *SeenSet[T] {
 	}
 }
 
+// Copy returns a shallow copy of the receiver.
+//
+// Returns:
+//   - *SeenSet[T]: The copy. Never returns nil.
+func (sm SeenSet[T]) Copy() *SeenSet[T] {
+	table := make(map[T]struct{}, len(sm.table))
+
+	for k := range sm.table {
+		table[k] = struct{}{}
+	}
+
+	return &SeenSet[T]{
+		table: table,
+	}
+}
+
 // See sets the value as seen.
 //
 // Parameters:
@@ -53,6 +69,10 @@ func NewSeenSet[T comparable]() *SeenSet[T] {
 func (sm *SeenSet[T]) See(v T) bool {
 	if sm == nil {
 		return false
+	}
+
+	if sm.table == nil {
+		sm.table = make(map[T]struct{})
 	}
 
 	_, ok := sm.table[v]
