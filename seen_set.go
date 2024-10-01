@@ -1,9 +1,5 @@
 package sets
 
-import (
-	"github.com/PlayerR9/go-sets/internal"
-)
-
 // SeenSet is a map that keeps track of seen values.
 type SeenSet[T comparable] struct {
 	// table is the map that keeps track of seen values.
@@ -140,7 +136,7 @@ func (sm SeenSet[T]) FilterSeen(elems []T) []T {
 		}
 	}
 
-	return slice
+	return slice[:len(slice):len(slice)]
 }
 
 // FilterNotSeen is like FilterSeen but returns the elements that are not seen.
@@ -166,6 +162,5 @@ func (sm SeenSet[T]) FilterNotSeen(elems []T) []T {
 		}
 	}
 
-	slice = internal.Unique(slice)
-	return slice
+	return slice[:len(slice):len(slice)]
 }
