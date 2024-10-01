@@ -125,15 +125,21 @@ func (sm SeenSet[T]) Has(v T) bool {
 //   - []T: The elements that are seen.
 func (sm SeenSet[T]) FilterSeen(elems []T) []T {
 	slice := make([]T, 0, len(elems))
+	seen := make(map[T]struct{})
 
 	for i := 0; i < len(elems); i++ {
-		_, ok := sm.table[elems[i]]
+		_, ok := seen[elems[i]]
+		if ok {
+			continue
+		}
+
+		_, ok = sm.table[elems[i]]
 		if ok {
 			slice = append(slice, elems[i])
+			seen[elems[i]] = struct{}{}
 		}
 	}
 
-	slice = internal.Unique(slice)
 	return slice
 }
 
@@ -146,9 +152,15 @@ func (sm SeenSet[T]) FilterSeen(elems []T) []T {
 //   - []T: The elements that are not seen.
 func (sm SeenSet[T]) FilterNotSeen(elems []T) []T {
 	slice := make([]T, 0, len(elems))
+	seen := make(map[T]struct{})
 
 	for i := 0; i < len(elems); i++ {
-		_, ok := sm.table[elems[i]]
+		_, ok := seen[elems[i]]
+		if ok {
+			continue
+		}
+
+		_, ok = sm.table[elems[i]]
 		if !ok {
 			slice = append(slice, elems[i])
 		}
